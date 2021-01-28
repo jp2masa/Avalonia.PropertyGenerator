@@ -1,0 +1,19 @@
+<Project>
+
+    <PropertyGroup>
+        <AvaloniaVersion>0.10.0</AvaloniaVersion>
+        <MicrosoftCodeAnalysisAnalyzersVersion>3.3.2</MicrosoftCodeAnalysisAnalyzersVersion>
+        <MicrosoftCodeAnalysisCSharpVersion>3.8.0</MicrosoftCodeAnalysisCSharpVersion>
+        <MicrosoftCodeAnalysisNetAnalyzersVersion>5.0.3</MicrosoftCodeAnalysisNetAnalyzersVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Update="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Update="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+        <PackageReference Update="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+        <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="$(MicrosoftCodeAnalysisAnalyzersVersion)" />
+        <PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisCSharpVersion)" />
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="$(MicrosoftCodeAnalysisNetAnalyzersVersion)" />
+    </ItemGroup>
+
+</Project>

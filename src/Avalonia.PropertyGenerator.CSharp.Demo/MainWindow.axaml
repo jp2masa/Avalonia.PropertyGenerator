@@ -1,0 +1,11 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Avalonia.PropertyGenerator.CSharp.Demo"
+        x:Class="Avalonia.PropertyGenerator.CSharp.Demo.MainWindow"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        Title="Avalonia Property Generator Demo">
+
+    <local:DemoControl />
+
+</Window>

@@ -1,0 +1,53 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1CA42E2-1B03-4AD0-9CF8-3835DD0CC728}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A416D0AA-C885-4CD3-B89A-A33360D231E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{189398A8-47D7-4752-9AAF-6E9632AD9F98}"
+	ProjectSection(SolutionItems) = preProject
+		build\Targets\Import.props = build\Targets\Import.props
+		build\Targets\Import.targets = build\Targets\Import.targets
+		build\Targets\PackageProperties.props = build\Targets\PackageProperties.props
+		build\Targets\PackageProperties.targets = build\Targets\PackageProperties.targets
+		build\Targets\PackageVersions.targets = build\Targets\PackageVersions.targets
+		build\Targets\RepoLayout.props = build\Targets\RepoLayout.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGenerator.CSharp", "src\Avalonia.PropertyGenerator.CSharp\Avalonia.PropertyGenerator.CSharp.csproj", "{5B1DE05B-3878-402D-B629-22FA03CDD588}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGenerator.CSharp.Demo", "src\Avalonia.PropertyGenerator.CSharp.Demo\Avalonia.PropertyGenerator.CSharp.Demo.csproj", "{B9BBDBE5-50A0-4265-982F-36DB2AA12E12}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B1DE05B-3878-402D-B629-22FA03CDD588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B1DE05B-3878-402D-B629-22FA03CDD588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B1DE05B-3878-402D-B629-22FA03CDD588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B1DE05B-3878-402D-B629-22FA03CDD588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BBDBE5-50A0-4265-982F-36DB2AA12E12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BBDBE5-50A0-4265-982F-36DB2AA12E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BBDBE5-50A0-4265-982F-36DB2AA12E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BBDBE5-50A0-4265-982F-36DB2AA12E12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A416D0AA-C885-4CD3-B89A-A33360D231E7} = {F1CA42E2-1B03-4AD0-9CF8-3835DD0CC728}
+		{189398A8-47D7-4752-9AAF-6E9632AD9F98} = {A416D0AA-C885-4CD3-B89A-A33360D231E7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A9EB4DD-8527-4171-AA20-45BF527D9737}
+	EndGlobalSection
+EndGlobal

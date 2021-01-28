@@ -1,0 +1,22 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Avalonia.PropertyGenerator.CSharp.Demo">
+
+    <Style Selector="local|DemoControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <StackPanel Margin="{TemplateBinding Padding}"
+                                Spacing="8">
+                        <NumericUpDown Value="{TemplateBinding Number, Mode=TwoWay}" />
+                        <TextBox Text="{TemplateBinding Text, Mode=TwoWay}" />
+                        <ToggleSwitch IsChecked="{TemplateBinding Bool, Mode=TwoWay}" />
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+</Styles>

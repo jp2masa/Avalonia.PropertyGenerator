@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <DevelopmentDependency>True</DevelopmentDependency>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="All" />
+    </ItemGroup>
+
+</Project>
