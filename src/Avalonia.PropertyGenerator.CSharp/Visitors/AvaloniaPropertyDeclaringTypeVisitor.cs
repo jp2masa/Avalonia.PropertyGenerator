@@ -54,7 +54,7 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
                 }
             }
 
-            return styled.Count > 0
+            return (styled.Count > 0 || direct.Count > 0 || attached.Count > 0)
                 ? new DeclaringType(symbol, styled.ToImmutable(), direct.ToImmutable(), attached.ToImmutable())
                 : default;
         }

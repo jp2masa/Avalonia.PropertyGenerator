@@ -10,7 +10,7 @@ Avalonia.PropertyGenerator generates the appropriate CLR members for Avalonia pr
 1. Add reference to `jp2masa.Avalonia.PropertyGenerator.CSharp` package:
 
 ```xml
-<PackageReference Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.10.0-beta2" />
+<PackageReference Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.10.0-beta2" PrivateAssets="All" />
 ```
 
 2. Declare Avalonia properties as usual, except the CLR members, which are now automatically generated!
