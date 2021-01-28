@@ -1,4 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/1ow4vfhp9t92k3bh/branch/master?svg=true)](https://ci.appveyor.com/project/jp2masa/avalonia-propertygenerator/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/jp2masa.Avalonia.PropertyGenerator.CSharp.svg)](https://www.nuget.org/packages/jp2masa.Avalonia.PropertyGenerator.CSharp/)
 [![MyGet](https://img.shields.io/myget/jp2masa/vpre/jp2masa.Avalonia.PropertyGenerator.CSharp.svg?label=myget)](https://www.myget.org/feed/jp2masa/package/nuget/jp2masa.Avalonia.PropertyGenerator.CSharp)
 
 # Avalonia.PropertyGenerator
