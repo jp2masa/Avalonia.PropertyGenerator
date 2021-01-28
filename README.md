@@ -5,6 +5,16 @@
 
 Avalonia.PropertyGenerator generates the appropriate CLR members for Avalonia property definitions.
 
+## Usage
+
+1. Add reference to `jp2masa.Avalonia.PropertyGenerator.CSharp` package:
+
+```xml
+<PackageReference Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.10.0-beta2" />
+```
+
+2. Declare Avalonia properties as usual, except the CLR members, which are now automatically generated!
+
 ## Example
 
 ### Source
@@ -50,9 +60,9 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
             set => SetAndRaise(TextProperty, ref _text, value);
         }
 
-        public static bool GetBool(IAvaloniaObject obj) => obj.GetValue(BoolProperty);
+        public static bool GetBool(Avalonia.IAvaloniaObject obj) => obj.GetValue(BoolProperty);
 
-        public static void SetBool(IAvaloniaObject obj, bool value) => obj.SetValue(BoolProperty, value);
+        public static void SetBool(Avalonia.IAvaloniaObject obj, bool value) => obj.SetValue(BoolProperty, value);
     }
 }
 

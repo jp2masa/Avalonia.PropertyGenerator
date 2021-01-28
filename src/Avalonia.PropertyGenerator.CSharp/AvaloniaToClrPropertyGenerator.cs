@@ -80,9 +80,9 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                     var accessibility = SyntaxFacts.GetText(property.Field.DeclaredAccessibility);
 
                     sourceBuilder.Append($@"
-        {accessibility} static {typeFullName} Get{property.Name}(IAvaloniaObject obj) => obj.GetValue({property.Field.Name});
+        {accessibility} static {typeFullName} Get{property.Name}(Avalonia.IAvaloniaObject obj) => obj.GetValue({property.Field.Name});
 
-        {accessibility} static void Set{property.Name}(IAvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
+        {accessibility} static void Set{property.Name}(Avalonia.IAvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
 ");
                 }
 
