@@ -44,11 +44,3 @@ deploy:
   on:
     branch: master
     configuration: Debug
-- provider: NuGet
-  server: https://www.myget.org/F/jp2masa/api/v2/package
-  artifact: DebugNupkg
-  api_key:
-    secure: puOcEbngEmaVMEnUL20u4mzATgvoyaTPRWGGwE98as1+8KGY3ypOKzt5OV63duwI
-  on:
-    appveyor_repo_tag: true
-    configuration: Debug
