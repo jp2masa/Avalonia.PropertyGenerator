@@ -31,11 +31,17 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
         public static readonly StyledProperty<double> NumberProperty =
             AvaloniaProperty.Register<DemoControl, double>(nameof(Number));
 
+        [BackingField(Name = "m_text", Accessibility = BackingFieldAccessibility.Internal)]
         public static readonly DirectProperty<DemoControl, string?> TextProperty =
             AvaloniaProperty.RegisterDirect<DemoControl, string?>(nameof(Text), o => o.Text, (o, v) => o.Text = v);
 
         public static readonly AttachedProperty<bool> BoolProperty =
             AvaloniaProperty.RegisterAttached<DemoControl, Control, bool>("Bool");
+
+        public DemoControl()
+        {
+            m_text = "Hello World!";
+        }
     }
 }
 ```
@@ -53,12 +59,12 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
             set => SetValue(NumberProperty, value);
         }
 
-        private string? _text;
+        internal string? m_text;
 
         public string? Text
         {
-            get => _text;
-            set => SetAndRaise(TextProperty, ref _text, value);
+            get => m_text;
+            set => SetAndRaise(TextProperty, ref m_text, value);
         }
 
         public static bool GetBool(Avalonia.IAvaloniaObject obj) => obj.GetValue(BoolProperty);
@@ -72,5 +78,4 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
 ## TODO
 
 - Readonly direct properties
-- Custom backing field name and accessibility for direct properties
 - Generate XML documentation

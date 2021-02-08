@@ -8,10 +8,16 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
         public static readonly StyledProperty<double> NumberProperty =
             AvaloniaProperty.Register<DemoControl, double>(nameof(Number));
 
+        [BackingField(Name = "m_text", Accessibility = BackingFieldAccessibility.Internal)]
         public static readonly DirectProperty<DemoControl, string?> TextProperty =
             AvaloniaProperty.RegisterDirect<DemoControl, string?>(nameof(Text), o => o.Text, (o, v) => o.Text = v);
 
         public static readonly AttachedProperty<bool> BoolProperty =
             AvaloniaProperty.RegisterAttached<DemoControl, Control, bool>("Bool");
+
+        public DemoControl()
+        {
+            m_text = "Hello World!";
+        }
     }
 }
