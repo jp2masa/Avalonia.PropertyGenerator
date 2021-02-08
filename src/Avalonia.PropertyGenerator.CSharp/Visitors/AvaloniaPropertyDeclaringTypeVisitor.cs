@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -37,17 +36,17 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
                 {
                     var type = boundType.ConstructUnboundGenericType();
 
-                    if (SymbolEqualityComparer.Default.Equals(type, _types.StyledProperty.ConstructUnboundGenericType()))
+                    if (SymbolEqualityComparer.Default.Equals(type, _types.StyledProperty))
                     {
                         styled.Add(property);
                     }
 
-                    if (SymbolEqualityComparer.Default.Equals(type, _types.DirectProperty.ConstructUnboundGenericType()))
+                    if (SymbolEqualityComparer.Default.Equals(type, _types.DirectProperty))
                     {
                         direct.Add(property);
                     }
 
-                    if (SymbolEqualityComparer.Default.Equals(type, _types.AttachedProperty.ConstructUnboundGenericType()))
+                    if (SymbolEqualityComparer.Default.Equals(type, _types.AttachedProperty))
                     {
                         attached.Add(property);
                     }
