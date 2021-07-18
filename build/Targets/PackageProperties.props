@@ -15,7 +15,7 @@
         <PackageProjectUrl>http://github.com/jp2masa/Avalonia.PropertyGenerator</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <PackageTags>avalonia property styled direct attached source generator dotnet core csharp</PackageTags>
+        <PackageTags>avalonia property styled direct attached roslyn source generator dotnet core csharp</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/jp2masa/Avalonia.PropertyGenerator.git</RepositoryUrl>
     </PropertyGroup>

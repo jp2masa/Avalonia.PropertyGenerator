@@ -14,6 +14,10 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <PackageVersion>0.10.0</PackageVersion>
         <PackageVersionSuffix Condition="'$(APPVEYOR)' == 'True'">-build.$(APPVEYOR_BUILD_NUMBER)+$(APPVEYOR_REPO_COMMIT.Substring(0, 7))</PackageVersionSuffix>
         <PackageVersionSuffix Condition="'$(PackageVersionSuffix)' == ''  AND '$(DesignTimeBuild)' != 'True'">-localbuild$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</PackageVersionSuffix>
