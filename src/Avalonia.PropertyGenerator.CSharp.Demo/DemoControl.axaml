@@ -14,6 +14,7 @@
                         <TextBox Text="{TemplateBinding Text, Mode=TwoWay}" />
                         <ToggleSwitch IsChecked="{TemplateBinding Bool, Mode=TwoWay}" />
                         <TextBlock Text="{TemplateBinding ReadonlyText}" />
+                        <TextBlock Text="{TemplateBinding ExistingStyled}" />
                     </StackPanel>
                 </Border>
             </ControlTemplate>

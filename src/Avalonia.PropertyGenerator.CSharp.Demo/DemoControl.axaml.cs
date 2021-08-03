@@ -19,6 +19,11 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
         public static readonly AttachedProperty<bool> BoolProperty =
             AvaloniaProperty.RegisterAttached<DemoControl, Control, bool>("Bool");
 
+        public static readonly StyledProperty<string> ExistingStyledProperty =
+            AvaloniaProperty.Register<DemoControl, string>(nameof(ExistingStyled));
+
+        public string ExistingStyled => GetValue(ExistingStyledProperty);
+
         static DemoControl()
         {
             NumberProperty.Changed.AddClassHandler<DemoControl>(
@@ -27,6 +32,7 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
                     if (e.NewValue is double number)
                     {
                         sender.SetAndRaise(ReadonlyTextProperty, ref sender._readonlyText, number.ToString());
+                        sender.SetValue(ExistingStyledProperty, number.ToString());
                     }
                 }
             );

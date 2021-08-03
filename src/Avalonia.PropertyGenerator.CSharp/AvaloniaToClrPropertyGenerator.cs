@@ -89,59 +89,79 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
 
                 foreach (var property in type.StyledProperties)
                 {
-                    var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[0].ToDisplayString();
-                    var accessibility = SyntaxFacts.GetText(property.Field.DeclaredAccessibility);
 
-                    sourceBuilder.Append($@"
-        {accessibility} {typeFullName} {property.Name}
+                    if (!property.ClrPropertyExists)
+                    {
+                        var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[0].ToDisplayString();
+                        var accessibility = GetAccessibilityText(property.ClrPropertyAccessibility);
+
+                        sourceBuilder.Append($@"
+        {accessibility}{typeFullName} {property.Name}
         {{
             get => GetValue({property.Field.Name});
             set => SetValue({property.Field.Name}, value);
         }}
 ");
+                    }
                 }
 
                 foreach (var property in type.DirectProperties)
                 {
                     var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[1].ToDisplayString();
-                    var accessibility = SyntaxFacts.GetText(property.Field.DeclaredAccessibility);
 
-                    var data = GetDirectPropertyData(property);
-                    var isReadonly = data.IsReadonly;
+                    var propertyAccessibility = GetAccessibilityText(property.ClrPropertyAccessibility);
+                    var fieldAccessibility = GetAccessibilityText(property.BackingFieldAccessibility);
 
-                    if (isReadonly)
+                    var isReadonly = property.IsReadonly;
+
+                    if (!property.BackingFieldExists)
                     {
                         sourceBuilder.Append($@"
-        {SyntaxFacts.GetText(data.BackingFieldAccessibility)} {typeFullName} {data.BackingFieldName};
-
-        {accessibility} {typeFullName} {property.Name} => {data.BackingFieldName};
+    {fieldAccessibility}{typeFullName} {property.BackingFieldName};
 ");
                     }
-                    else
+
+                    if (!property.ClrPropertyExists)
                     {
-
-                        sourceBuilder.Append($@"
-        {SyntaxFacts.GetText(data.BackingFieldAccessibility)} {typeFullName} {data.BackingFieldName};
-
-        {accessibility} {typeFullName} {property.Name}
-        {{
-            get => {data.BackingFieldName};
-            set => SetAndRaise({property.Field.Name}, ref {data.BackingFieldName}, value);
-        }}
+                        if (isReadonly)
+                        {
+                            sourceBuilder.Append($@"
+    {propertyAccessibility}{typeFullName} {property.Name} => {property.BackingFieldName};
 ");
+                        }
+                        else
+                        {
+                            sourceBuilder.Append($@"
+    {propertyAccessibility}{typeFullName} {property.Name}
+    {{
+        get => {property.BackingFieldName};
+        set => SetAndRaise({property.Field.Name}, ref {property.BackingFieldName}, value);
+    }}
+");
+                        }
                     }
                 }
 
                 foreach (var property in type.AttachedProperties)
                 {
                     var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[0].ToDisplayString();
-                    var accessibility = SyntaxFacts.GetText(property.Field.DeclaredAccessibility);
 
-                    sourceBuilder.Append($@"
-        {accessibility} static {typeFullName} Get{property.Name}(Avalonia.IAvaloniaObject obj) => obj.GetValue({property.Field.Name});
+                    var getterAccessibility = GetAccessibilityText(property.GetterAccessibility);
+                    var setterAccessibility = GetAccessibilityText(property.SetterAccessibility);
 
-        {accessibility} static void Set{property.Name}(Avalonia.IAvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
+                    if (!property.GetterExists)
+                    {
+                        sourceBuilder.Append($@"
+        {getterAccessibility}static {typeFullName} Get{property.Name}(Avalonia.IAvaloniaObject obj) => obj.GetValue({property.Field.Name});
 ");
+                    }
+
+                    if (!property.SetterExists)
+                    {
+                        sourceBuilder.Append($@"
+        {setterAccessibility}static void Set{property.Name}(Avalonia.IAvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
+");
+                    }
                 }
 
                 sourceBuilder.Append(
@@ -155,49 +175,16 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
             }
         }
 
-        private static (string BackingFieldName, Accessibility BackingFieldAccessibility, bool IsReadonly) GetDirectPropertyData(Property property)
+        private static string GetAccessibilityText(Accessibility accessibility)
         {
-            var accessibility = default(Accessibility);
-            var name = default(string);
-            var isReadonly = false;
+            var result = SyntaxFacts.GetText(accessibility);
 
-            foreach (var attribute in property.Field.GetAttributes())
+            if (!String.IsNullOrWhiteSpace(result))
             {
-                if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.ReadonlyAttribute")
-                {
-                    isReadonly = true;
-                    continue;
-                }
-
-                if (attribute.AttributeClass?.ToDisplayString() != "Avalonia.PropertyGenerator.BackingFieldAttribute")
-                {
-                    continue;
-                }
-
-                foreach (var arg in attribute.NamedArguments)
-                {
-                    if (arg.Key == "Name" && arg.Value.Value is string value)
-                    {
-                        name = value;
-                    }
-                    else if (arg.Key == "Accessibility" && arg.Value.Value is not null)
-                    {
-                        accessibility = (Accessibility)arg.Value.Value;
-                    }
-                }
+                result += ' ';
             }
 
-            if (accessibility == Accessibility.NotApplicable)
-            {
-                accessibility = Accessibility.Private;
-            }
-
-            return (name ?? GetDefaultBackingFieldName(property.Name), accessibility, isReadonly);
+            return result;
         }
-
-        private static string GetDefaultBackingFieldName(string name) =>
-            String.IsNullOrWhiteSpace(name)
-            ? throw new InvalidOperationException()
-            : $"_{Char.ToLowerInvariant(name[0])}{name.Substring(1)}";
     }
 }

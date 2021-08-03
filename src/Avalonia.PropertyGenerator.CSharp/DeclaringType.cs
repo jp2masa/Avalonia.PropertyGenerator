@@ -5,7 +5,7 @@ namespace Avalonia.PropertyGenerator.CSharp
 {
     internal sealed record DeclaringType(
         INamedTypeSymbol Type,
-        ImmutableArray<Property> StyledProperties,
-        ImmutableArray<Property> DirectProperties,
-        ImmutableArray<Property> AttachedProperties);
+        ImmutableArray<StyledProperty> StyledProperties,
+        ImmutableArray<DirectProperty> DirectProperties,
+        ImmutableArray<AttachedProperty> AttachedProperties);
 }

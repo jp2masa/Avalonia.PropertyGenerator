@@ -20,36 +20,27 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
                 return default;
             }
 
-            var styled = ImmutableArray.CreateBuilder<Property>();
-            var direct = ImmutableArray.CreateBuilder<Property>();
-            var attached = ImmutableArray.CreateBuilder<Property>();
+            var styled = ImmutableArray.CreateBuilder<StyledProperty>();
+            var direct = ImmutableArray.CreateBuilder<DirectProperty>();
+            var attached = ImmutableArray.CreateBuilder<AttachedProperty>();
 
-            var visitor = new AvaloniaPropertyFieldVisitor();
+            var visitor = new AvaloniaPropertyFieldVisitor(_types);
 
             foreach (var member in symbol.GetMembers())
             {
                 var property = member.Accept(visitor);
 
-                if (property is not null
-                    && property.Field.Type is INamedTypeSymbol boundType
-                    && boundType.IsGenericType)
+                switch (property)
                 {
-                    var type = boundType.ConstructUnboundGenericType();
-
-                    if (SymbolEqualityComparer.Default.Equals(type, _types.StyledProperty))
-                    {
-                        styled.Add(property);
-                    }
-
-                    if (SymbolEqualityComparer.Default.Equals(type, _types.DirectProperty))
-                    {
-                        direct.Add(property);
-                    }
-
-                    if (SymbolEqualityComparer.Default.Equals(type, _types.AttachedProperty))
-                    {
-                        attached.Add(property);
-                    }
+                    case StyledProperty x:
+                        styled.Add(x);
+                        break;
+                    case DirectProperty x:
+                        direct.Add(x);
+                        break;
+                    case AttachedProperty x:
+                        attached.Add(x);
+                        break;
                 }
             }
 
