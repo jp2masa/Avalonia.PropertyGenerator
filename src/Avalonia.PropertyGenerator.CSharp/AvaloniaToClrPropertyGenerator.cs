@@ -56,6 +56,11 @@ namespace Avalonia.PropertyGenerator
 
         public BackingFieldAccessibility Accessibility { get; set; }
     }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    internal sealed class ReadonlyAttribute : Attribute
+    {
+    }
 }
 ";
 
@@ -101,17 +106,30 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                     var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[1].ToDisplayString();
                     var accessibility = SyntaxFacts.GetText(property.Field.DeclaredAccessibility);
 
-                    var backingField = GetBackingField(property);
+                    var data = GetDirectPropertyData(property);
+                    var isReadonly = data.IsReadonly;
 
-                    sourceBuilder.Append($@"
-        {SyntaxFacts.GetText(backingField.Accessibility)} {typeFullName} {backingField.Name};
+                    if (isReadonly)
+                    {
+                        sourceBuilder.Append($@"
+        {SyntaxFacts.GetText(data.BackingFieldAccessibility)} {typeFullName} {data.BackingFieldName};
+
+        {accessibility} {typeFullName} {property.Name} => {data.BackingFieldName};
+");
+                    }
+                    else
+                    {
+
+                        sourceBuilder.Append($@"
+        {SyntaxFacts.GetText(data.BackingFieldAccessibility)} {typeFullName} {data.BackingFieldName};
 
         {accessibility} {typeFullName} {property.Name}
         {{
-            get => {backingField.Name};
-            set => SetAndRaise({property.Field.Name}, ref {backingField.Name}, value);
+            get => {data.BackingFieldName};
+            set => SetAndRaise({property.Field.Name}, ref {data.BackingFieldName}, value);
         }}
 ");
+                    }
                 }
 
                 foreach (var property in type.AttachedProperties)
@@ -137,13 +155,20 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
             }
         }
 
-        private static (string Name, Accessibility Accessibility) GetBackingField(Property property)
+        private static (string BackingFieldName, Accessibility BackingFieldAccessibility, bool IsReadonly) GetDirectPropertyData(Property property)
         {
             var accessibility = default(Accessibility);
             var name = default(string);
+            var isReadonly = false;
 
             foreach (var attribute in property.Field.GetAttributes())
             {
+                if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.ReadonlyAttribute")
+                {
+                    isReadonly = true;
+                    continue;
+                }
+
                 if (attribute.AttributeClass?.ToDisplayString() != "Avalonia.PropertyGenerator.BackingFieldAttribute")
                 {
                     continue;
@@ -167,7 +192,7 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                 accessibility = Accessibility.Private;
             }
 
-            return (name ?? GetDefaultBackingFieldName(property.Name), accessibility);
+            return (name ?? GetDefaultBackingFieldName(property.Name), accessibility, isReadonly);
         }
 
         private static string GetDefaultBackingFieldName(string name) =>

@@ -12,12 +12,30 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
         public static readonly DirectProperty<DemoControl, string?> TextProperty =
             AvaloniaProperty.RegisterDirect<DemoControl, string?>(nameof(Text), o => o.Text, (o, v) => o.Text = v);
 
+        [Readonly]
+        public static readonly DirectProperty<DemoControl, string> ReadonlyTextProperty =
+            AvaloniaProperty.RegisterDirect<DemoControl, string>(nameof(ReadonlyText), o => o.ReadonlyText);
+
         public static readonly AttachedProperty<bool> BoolProperty =
             AvaloniaProperty.RegisterAttached<DemoControl, Control, bool>("Bool");
+
+        static DemoControl()
+        {
+            NumberProperty.Changed.AddClassHandler<DemoControl>(
+                (sender, e) =>
+                {
+                    if (e.NewValue is double number)
+                    {
+                        sender.SetAndRaise(ReadonlyTextProperty, ref sender._readonlyText, number.ToString());
+                    }
+                }
+            );
+        }
 
         public DemoControl()
         {
             m_text = "Hello World!";
+            _readonlyText = "0";
         }
     }
 }

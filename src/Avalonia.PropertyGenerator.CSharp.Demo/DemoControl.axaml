@@ -13,6 +13,7 @@
                         <NumericUpDown Value="{TemplateBinding Number, Mode=TwoWay}" />
                         <TextBox Text="{TemplateBinding Text, Mode=TwoWay}" />
                         <ToggleSwitch IsChecked="{TemplateBinding Bool, Mode=TwoWay}" />
+                        <TextBlock Text="{TemplateBinding ReadonlyText}" />
                     </StackPanel>
                 </Border>
             </ControlTemplate>
