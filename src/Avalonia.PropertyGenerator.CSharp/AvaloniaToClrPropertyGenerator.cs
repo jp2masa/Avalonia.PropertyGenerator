@@ -65,7 +65,13 @@ namespace Avalonia.PropertyGenerator
 ";
 
             var attributesSource = SourceText.From(attributes, Encoding.UTF8);
-            compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(attributesSource));
+
+            if (context.ParseOptions is not CSharpParseOptions parseOptions)
+            {
+                throw new InvalidOperationException("Only C# is currently supported!");
+            }
+
+            compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(attributesSource, parseOptions));
 
             var visitor = new AvaloniaPropertyRootVisitor(wellKnowntypes);
             var types = visitor.Visit(compilation.Assembly.GlobalNamespace);
