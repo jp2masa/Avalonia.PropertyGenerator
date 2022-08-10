@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace Avalonia.PropertyGenerator.CSharp
 {
     internal sealed record Types(
-        INamedTypeSymbol IAvaloniaObject,
+        INamedTypeSymbol AvaloniaObject,
         INamedTypeSymbol StyledProperty,
         INamedTypeSymbol DirectProperty,
         INamedTypeSymbol AttachedProperty)
@@ -46,12 +46,12 @@ namespace Avalonia.PropertyGenerator.CSharp
             }
 
             var types = new Types(
-                GetType("Avalonia.IAvaloniaObject")!,
+                GetType("Avalonia.AvaloniaObject")!,
                 GetType("Avalonia.StyledProperty`1")!,
                 GetType("Avalonia.DirectProperty`2")!,
                 GetType("Avalonia.AttachedProperty`1")!);
 
-            if (types.IAvaloniaObject is null
+            if (types.AvaloniaObject is null
                 || types.StyledProperty is null
                 || types.DirectProperty is null
                 || types.AttachedProperty is null)

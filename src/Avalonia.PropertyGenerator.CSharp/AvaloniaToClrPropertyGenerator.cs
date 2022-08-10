@@ -158,14 +158,14 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                     if (!property.GetterExists)
                     {
                         sourceBuilder.Append($@"
-        {getterAccessibility}static {typeFullName} Get{property.Name}(Avalonia.IAvaloniaObject obj) => obj.GetValue({property.Field.Name});
+        {getterAccessibility}static {typeFullName} Get{property.Name}(Avalonia.AvaloniaObject obj) => obj.GetValue({property.Field.Name});
 ");
                     }
 
                     if (!property.SetterExists)
                     {
                         sourceBuilder.Append($@"
-        {setterAccessibility}static void Set{property.Name}(Avalonia.IAvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
+        {setterAccessibility}static void Set{property.Name}(Avalonia.AvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
 ");
                     }
                 }

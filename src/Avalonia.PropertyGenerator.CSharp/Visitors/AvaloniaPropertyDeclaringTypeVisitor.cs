@@ -15,9 +15,21 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
 
         public override DeclaringType? VisitNamedType(INamedTypeSymbol symbol)
         {
-            if (!symbol.AllInterfaces.Any(x => SymbolEqualityComparer.Default.Equals(x, _types.IAvaloniaObject)))
+            var type = symbol;
+
+            while (type is not null)
             {
-                return default;
+                if (SymbolEqualityComparer.Default.Equals(type, _types.AvaloniaObject))
+                {
+                    break;
+                }
+
+                type = type.BaseType;
+            }
+
+            if (type is null)
+            {
+                return null;
             }
 
             var styled = ImmutableArray.CreateBuilder<StyledProperty>();

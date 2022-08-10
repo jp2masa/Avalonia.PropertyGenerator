@@ -67,9 +67,9 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
             set => SetAndRaise(TextProperty, ref m_text, value);
         }
 
-        public static bool GetBool(Avalonia.IAvaloniaObject obj) => obj.GetValue(BoolProperty);
+        public static bool GetBool(Avalonia.AvaloniaObject obj) => obj.GetValue(BoolProperty);
 
-        public static void SetBool(Avalonia.IAvaloniaObject obj, bool value) => obj.SetValue(BoolProperty, value);
+        public static void SetBool(Avalonia.AvaloniaObject obj, bool value) => obj.SetValue(BoolProperty, value);
     }
 }
 
