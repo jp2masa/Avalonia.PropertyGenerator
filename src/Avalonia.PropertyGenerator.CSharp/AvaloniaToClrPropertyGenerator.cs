@@ -19,7 +19,7 @@ namespace Avalonia.PropertyGenerator.CSharp
         {
             var compilation = context.Compilation;
 
-            if (Types.FromCompilation(compilation, context.ReportDiagnostic) is not Types wellKnowntypes)
+            if (Types.FromCompilation(compilation, context.ReportDiagnostic) is not Types wellKnownTypes)
             {
                 return;
             }
@@ -73,7 +73,7 @@ namespace Avalonia.PropertyGenerator
 
             compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(attributesSource, parseOptions));
 
-            var visitor = new AvaloniaPropertyRootVisitor(wellKnowntypes);
+            var visitor = new AvaloniaPropertyRootVisitor(wellKnownTypes);
             var types = visitor.Visit(compilation.Assembly.GlobalNamespace);
 
             if (!types.HasValue || types.Value.Length == 0)
@@ -98,7 +98,7 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
 
                     if (!property.ClrPropertyExists)
                     {
-                        var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[0].ToDisplayString();
+                        var typeFullName = TypeToFullDisplayString(((INamedTypeSymbol)property.Field.Type).TypeArguments[0]);
                         var accessibility = GetAccessibilityText(property.ClrPropertyAccessibility);
 
                         sourceBuilder.Append($@"
@@ -113,7 +113,7 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
 
                 foreach (var property in type.DirectProperties)
                 {
-                    var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[1].ToDisplayString();
+                    var typeFullName = TypeToFullDisplayString(((INamedTypeSymbol)property.Field.Type).TypeArguments[1]);
 
                     var propertyAccessibility = GetAccessibilityText(property.ClrPropertyAccessibility);
                     var fieldAccessibility = GetAccessibilityText(property.BackingFieldAccessibility);
@@ -123,7 +123,7 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                     if (!property.BackingFieldExists)
                     {
                         sourceBuilder.Append($@"
-    {fieldAccessibility}{typeFullName} {property.BackingFieldName};
+        {fieldAccessibility}{typeFullName} {property.BackingFieldName};
 ");
                     }
 
@@ -132,17 +132,17 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                         if (isReadonly)
                         {
                             sourceBuilder.Append($@"
-    {propertyAccessibility}{typeFullName} {property.Name} => {property.BackingFieldName};
+        {propertyAccessibility}{typeFullName} {property.Name} => {property.BackingFieldName};
 ");
                         }
                         else
                         {
                             sourceBuilder.Append($@"
-    {propertyAccessibility}{typeFullName} {property.Name}
-    {{
-        get => {property.BackingFieldName};
-        set => SetAndRaise({property.Field.Name}, ref {property.BackingFieldName}, value);
-    }}
+        {propertyAccessibility}{typeFullName} {property.Name}
+        {{
+            get => {property.BackingFieldName};
+            set => SetAndRaise({property.Field.Name}, ref {property.BackingFieldName}, value);
+        }}
 ");
                         }
                     }
@@ -150,7 +150,7 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
 
                 foreach (var property in type.AttachedProperties)
                 {
-                    var typeFullName = ((INamedTypeSymbol)property.Field.Type).TypeArguments[0].ToDisplayString();
+                    var typeFullName = TypeToFullDisplayString(((INamedTypeSymbol)property.Field.Type).TypeArguments[0]);
 
                     var getterAccessibility = GetAccessibilityText(property.GetterAccessibility);
                     var setterAccessibility = GetAccessibilityText(property.SetterAccessibility);
@@ -158,14 +158,14 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
                     if (!property.GetterExists)
                     {
                         sourceBuilder.Append($@"
-        {getterAccessibility}static {typeFullName} Get{property.Name}(Avalonia.AvaloniaObject obj) => obj.GetValue({property.Field.Name});
+        {getterAccessibility}static {typeFullName} Get{property.Name}({TypeToFullDisplayString(wellKnownTypes.AvaloniaObject)} obj) => obj.GetValue({property.Field.Name});
 ");
                     }
 
                     if (!property.SetterExists)
                     {
                         sourceBuilder.Append($@"
-        {setterAccessibility}static void Set{property.Name}(Avalonia.AvaloniaObject obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
+        {setterAccessibility}static void Set{property.Name}({TypeToFullDisplayString(wellKnownTypes.AvaloniaObject)} obj, {typeFullName} value) => obj.SetValue({property.Field.Name}, value);
 ");
                     }
                 }
@@ -192,5 +192,14 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
 
             return result;
         }
+
+        private static string TypeToFullDisplayString(ITypeSymbol type) =>
+            $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}{
+                (
+                    type.NullableAnnotation == NullableAnnotation.Annotated
+                        ? "?"
+                        : String.Empty
+                )
+            }";
     }
 }
