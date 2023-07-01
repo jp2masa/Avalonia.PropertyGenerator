@@ -194,12 +194,12 @@ $@"namespace {type.Type.ContainingNamespace.ToDisplayString()}
         }
 
         private static string TypeToFullDisplayString(ITypeSymbol type) =>
-            $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}{
-                (
-                    type.NullableAnnotation == NullableAnnotation.Annotated
-                        ? "?"
-                        : String.Empty
+            type.ToDisplayString(
+                SymbolDisplayFormat.FullyQualifiedFormat.WithMiscellaneousOptions(
+                    SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                        | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier
+                        | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 )
-            }";
+            );
     }
 }

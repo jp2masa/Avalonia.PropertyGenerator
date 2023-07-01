@@ -1,8 +1,8 @@
 <Project>
 
     <PropertyGroup>
-        <AvaloniaVersion>0.10.17</AvaloniaVersion>
-        <MicrosoftCodeAnalysisAnalyzersVersion>3.3.3</MicrosoftCodeAnalysisAnalyzersVersion>
+        <AvaloniaVersion>0.10.21</AvaloniaVersion>
+        <MicrosoftCodeAnalysisAnalyzersVersion>3.3.4</MicrosoftCodeAnalysisAnalyzersVersion>
         <MicrosoftCodeAnalysisCSharpVersion>3.10.0</MicrosoftCodeAnalysisCSharpVersion>
         <MicrosoftCodeAnalysisNetAnalyzersVersion>5.0.3</MicrosoftCodeAnalysisNetAnalyzersVersion>
     </PropertyGroup>

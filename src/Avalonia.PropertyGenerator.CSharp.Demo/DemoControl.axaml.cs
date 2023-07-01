@@ -8,6 +8,9 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
         public static readonly StyledProperty<double> NumberProperty =
             AvaloniaProperty.Register<DemoControl, double>(nameof(Number));
 
+        public static readonly StyledProperty<double?> NullableNumberProperty =
+            AvaloniaProperty.Register<DemoControl, double?>(nameof(NullableNumber));
+
         [BackingField(Name = "m_text", Accessibility = BackingFieldAccessibility.Internal)]
         public static readonly DirectProperty<DemoControl, string?> TextProperty =
             AvaloniaProperty.RegisterDirect<DemoControl, string?>(nameof(Text), o => o.Text, (o, v) => o.Text = v);
