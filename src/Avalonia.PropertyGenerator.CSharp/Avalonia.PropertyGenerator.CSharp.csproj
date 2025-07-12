@@ -6,6 +6,7 @@
         <IncludeBuildOutput>False</IncludeBuildOutput>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <NoPackageAnalysis>True</NoPackageAnalysis>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 
     <ItemGroup>
