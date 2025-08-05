@@ -1,4 +1,4 @@
-version: 0.10.0-build{build}
+version: 0.11.0-build{build}
 image: Visual Studio 2022
 
 shallow_clone: true
@@ -31,7 +31,7 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: nsINQ1oHohP7tM/wP5Icr1Ko3P/kgo12dHZlEd1HoYDOGkmRFQE6qJVx26uZLL7O
+    secure: km9pZkPsOEo0CU5QdUy4q6pLM4mEgI/ib1MiHfV1KBBNSZ2Ja5pf3yGRTMNuTQiA
   artifact: ReleaseNupkg
   on:
     appveyor_repo_tag: true
