@@ -5,8 +5,8 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
 {
     internal sealed partial class DemoControl : TemplatedControl
     {
-        public static readonly StyledProperty<double> NumberProperty =
-            AvaloniaProperty.Register<DemoControl, double>(nameof(Number));
+        public static readonly StyledProperty<decimal> NumberProperty =
+            AvaloniaProperty.Register<DemoControl, decimal>(nameof(Number));
 
         public static readonly StyledProperty<double?> NullableNumberProperty =
             AvaloniaProperty.Register<DemoControl, double?>(nameof(NullableNumber));
@@ -29,14 +29,13 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
 
         static DemoControl()
         {
-            NumberProperty.Changed.AddClassHandler<DemoControl>(
+            NumberProperty.Changed.AddClassHandler<DemoControl, decimal>(
                 (sender, e) =>
                 {
-                    if (e.NewValue is double number)
-                    {
-                        sender.SetAndRaise(ReadonlyTextProperty, ref sender._readonlyText, number.ToString());
-                        sender.SetValue(ExistingStyledProperty, number.ToString());
-                    }
+                    var str = e.NewValue.Value.ToString();
+
+                    sender.SetAndRaise(ReadonlyTextProperty, ref sender._readonlyText, str);
+                    sender.SetValue(ExistingStyledProperty, str);
                 }
             );
         }
@@ -45,6 +44,7 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
         {
             m_text = "Hello World!";
             _readonlyText = "0";
+            SetValue(ExistingStyledProperty, "0");
         }
     }
 }

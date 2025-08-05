@@ -1,18 +1,12 @@
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Avalonia.PropertyGenerator.CSharp.Demo
 {
-    internal sealed class MainWindow : Window
+    internal sealed partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

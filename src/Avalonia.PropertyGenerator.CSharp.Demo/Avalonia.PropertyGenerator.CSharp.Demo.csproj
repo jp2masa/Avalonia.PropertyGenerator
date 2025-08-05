@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <OutputType>WinExe</OutputType>
         <IsPackable>False</IsPackable>
     </PropertyGroup>
@@ -9,10 +9,14 @@
     <ItemGroup>
         <PackageReference Include="Avalonia.Desktop" />
         <PackageReference Include="Avalonia.Diagnostics" />
+        <PackageReference Include="Avalonia.Themes.Fluent" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Avalonia.PropertyGenerator.CSharp\Avalonia.PropertyGenerator.CSharp.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="False" />
+        <ProjectReference
+            Include="..\Avalonia.PropertyGenerator.CSharp\Avalonia.PropertyGenerator.CSharp.csproj"
+            OutputItemType="Analyzer"
+            ReferenceOutputAssembly="False" />
     </ItemGroup>
 
 </Project>

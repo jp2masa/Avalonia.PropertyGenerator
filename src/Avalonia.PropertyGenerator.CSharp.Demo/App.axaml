@@ -3,7 +3,7 @@
              x:Class="Avalonia.PropertyGenerator.CSharp.Demo.App">
 
     <Application.Styles>
-        <FluentTheme Mode="Light" />
+        <FluentTheme />
         <StyleInclude Source="/DemoControl.axaml" />
     </Application.Styles>
 

@@ -9,7 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="True" PackagePath="analyzers/dotnet/cs" Visible="False" />
+        <None
+            Include="$(OutputPath)\$(AssemblyName).dll"
+            Pack="True"
+            PackagePath="analyzers/dotnet/cs"
+            Visible="False" />
     </ItemGroup>
 
     <ItemGroup>
