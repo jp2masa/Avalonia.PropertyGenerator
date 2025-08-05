@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -196,9 +194,10 @@ namespace {type.Type.ContainingNamespace.ToDisplayString()}
 }
 ");
 
-                context.AddSource(
-                    Path.GetFileName(type.Type.DeclaringSyntaxReferences.First().SyntaxTree.FilePath),
-                    SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
+                var fileName = FormattableString.Invariant($"{type.Type.ToDisplayString()}.g.cs");
+                var sourceText = SourceText.From(sourceBuilder.ToString(), Encoding.UTF8);
+
+                context.AddSource(fileName, sourceText);
             }
         }
 
