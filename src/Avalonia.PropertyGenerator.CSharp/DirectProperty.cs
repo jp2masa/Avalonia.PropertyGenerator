@@ -57,10 +57,8 @@ namespace Avalonia.PropertyGenerator.CSharp
                 if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.ReadonlyAttribute")
                 {
                     isReadonly = true;
-                    continue;
                 }
-
-                if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.BackingFieldAttribute")
+                else if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.BackingFieldAttribute")
                 {
                     foreach (var arg in attribute.NamedArguments)
                     {
@@ -73,8 +71,6 @@ namespace Avalonia.PropertyGenerator.CSharp
                             backingFieldAccessibility = (Accessibility)arg.Value.Value;
                         }
                     }
-
-                    continue;
                 }
             }
 
