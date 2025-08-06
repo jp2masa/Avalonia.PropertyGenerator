@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 
@@ -32,7 +34,7 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
             NumberProperty.Changed.AddClassHandler<DemoControl, decimal>(
                 (sender, e) =>
                 {
-                    var str = e.NewValue.Value.ToString();
+                    var str = e.NewValue.Value.ToString(CultureInfo.CurrentCulture);
 
                     sender.SetAndRaise(ReadonlyTextProperty, ref sender._readonlyText, str);
                     sender.SetValue(ExistingStyledProperty, str);

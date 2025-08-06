@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 
 namespace Avalonia.PropertyGenerator.CSharp
@@ -46,7 +47,7 @@ namespace Avalonia.PropertyGenerator.CSharp
 
         public static string? GetPropertyName(IFieldSymbol field)
         {
-            var i = field.Name.LastIndexOf("Property");
+            var i = field.Name.LastIndexOf("Property", StringComparison.Ordinal);
 
             if (i == -1 || i == 0)
             {

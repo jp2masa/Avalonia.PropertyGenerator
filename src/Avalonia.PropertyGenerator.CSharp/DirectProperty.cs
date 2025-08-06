@@ -54,19 +54,21 @@ namespace Avalonia.PropertyGenerator.CSharp
 
             foreach (var attribute in field.GetAttributes())
             {
-                if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.ReadonlyAttribute")
+                if (IsAttributeFullNameEqualTo(attribute, "Avalonia.PropertyGenerator.ReadonlyAttribute"))
                 {
                     isReadonly = true;
                 }
-                else if (attribute.AttributeClass?.ToDisplayString() == "Avalonia.PropertyGenerator.BackingFieldAttribute")
+                else if (IsAttributeFullNameEqualTo(attribute, "Avalonia.PropertyGenerator.BackingFieldAttribute"))
                 {
                     foreach (var arg in attribute.NamedArguments)
                     {
-                        if (arg.Key == "Name" && arg.Value.Value is string value)
+                        if (arg.Key.Equals("Name", StringComparison.Ordinal)
+                            && arg.Value.Value is string value)
                         {
                             backingFieldName = value;
                         }
-                        else if (arg.Key == "Accessibility" && arg.Value.Value is not null)
+                        else if (arg.Key.Equals("Accessibility", StringComparison.Ordinal)
+                            && arg.Value.Value is not null)
                         {
                             backingFieldAccessibility = (Accessibility)arg.Value.Value;
                         }
@@ -97,5 +99,8 @@ namespace Avalonia.PropertyGenerator.CSharp
             String.IsNullOrWhiteSpace(name)
             ? throw new InvalidOperationException()
             : $"_{Char.ToLowerInvariant(name[0])}{name.Substring(1)}";
+
+        private static bool IsAttributeFullNameEqualTo(AttributeData attribute, string fullName) =>
+            String.Equals(attribute.AttributeClass?.ToDisplayString(), fullName, StringComparison.Ordinal);
     }
 }
