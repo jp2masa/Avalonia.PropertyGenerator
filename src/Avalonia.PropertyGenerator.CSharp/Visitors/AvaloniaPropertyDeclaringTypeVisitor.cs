@@ -23,11 +23,14 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
             var direct = ImmutableArray.CreateBuilder<DirectProperty>();
             var attached = ImmutableArray.CreateBuilder<AttachedProperty>();
 
-            var visitor = new AvaloniaPropertyFieldVisitor(_types);
-
             foreach (var member in symbol.GetMembers())
             {
-                var property = member.Accept(visitor);
+                if (member.Kind != SymbolKind.Field)
+                {
+                    continue;
+                }
+
+                var property = Property.TryCreate(_types, (IFieldSymbol)member);
 
                 switch (property)
                 {
