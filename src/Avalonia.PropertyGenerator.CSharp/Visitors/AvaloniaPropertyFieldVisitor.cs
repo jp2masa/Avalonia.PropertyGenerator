@@ -13,7 +13,7 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
 
         public override Property? VisitField(IFieldSymbol symbol)
         {
-            if (Property.TryCreate(_types, symbol) is Property property)
+            if (Property.TryCreate(_types, symbol) is { } property)
             {
                 return property;
             }

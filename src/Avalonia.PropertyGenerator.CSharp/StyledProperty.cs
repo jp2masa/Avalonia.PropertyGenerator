@@ -28,7 +28,7 @@ namespace Avalonia.PropertyGenerator.CSharp
 
             var clrPropertyExists = false;
 
-            if (field.ContainingType is INamedTypeSymbol declaringType)
+            if (field.ContainingType is { } declaringType)
             {
                 clrPropertyExists = declaringType.GetMembers().Any(x => String.Equals(x.Name, name, StringComparison.Ordinal));
             }

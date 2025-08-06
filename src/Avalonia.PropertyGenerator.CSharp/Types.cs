@@ -45,21 +45,12 @@ namespace Avalonia.PropertyGenerator.CSharp
                 return type;
             }
 
-            var types = new Types(
-                GetType("Avalonia.AvaloniaObject")!,
-                GetType("Avalonia.StyledProperty`1")!,
-                GetType("Avalonia.DirectProperty`2")!,
-                GetType("Avalonia.AttachedProperty`1")!);
-
-            if (types.AvaloniaObject is null
-                || types.StyledProperty is null
-                || types.DirectProperty is null
-                || types.AttachedProperty is null)
-            {
-                return null;
-            }
-
-            return types;
+            return GetType("Avalonia.AvaloniaObject") is { } avaloniaObject 
+                && GetType("Avalonia.StyledProperty`1") is { } styledProperty
+                && GetType("Avalonia.DirectProperty`2") is { } directProperty
+                && GetType("Avalonia.AttachedProperty`1") is { } attachedProperty
+                ? new Types(avaloniaObject, styledProperty, directProperty, attachedProperty)
+                : null;
         }
     }
 }

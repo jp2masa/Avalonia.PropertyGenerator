@@ -23,7 +23,7 @@ namespace Avalonia.PropertyGenerator.CSharp
         {
             var compilation = context.Compilation;
 
-            if (Types.FromCompilation(compilation, context.ReportDiagnostic) is not Types wellKnownTypes)
+            if (Types.FromCompilation(compilation, context.ReportDiagnostic) is not { } wellKnownTypes)
             {
                 return;
             }

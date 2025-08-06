@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGenerator.CSharp
             var getterExists = false;
             var setterExists = false;
 
-            if (field.ContainingType is INamedTypeSymbol declaringType)
+            if (field.ContainingType is { } declaringType)
             {
                 getterExists = declaringType.GetMembers().Any(x => String.Equals(x.Name, getterName, StringComparison.Ordinal));
                 setterExists = declaringType.GetMembers().Any(x => String.Equals(x.Name, setterName, StringComparison.Ordinal));
