@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Avalonia.PropertyGenerator.CSharp.Visitors
@@ -15,19 +14,7 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
 
         public override DeclaringType? VisitNamedType(INamedTypeSymbol symbol)
         {
-            var type = symbol;
-
-            while (type is not null)
-            {
-                if (SymbolEqualityComparer.Default.Equals(type, _types.AvaloniaObject))
-                {
-                    break;
-                }
-
-                type = type.BaseType;
-            }
-
-            if (type is null)
+            if (!symbol.IsStatic && !IsAvaloniaObject(symbol))
             {
                 return null;
             }
@@ -44,10 +31,10 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
 
                 switch (property)
                 {
-                    case StyledProperty x:
+                    case StyledProperty x when !symbol.IsStatic:
                         styled.Add(x);
                         break;
-                    case DirectProperty x:
+                    case DirectProperty x when !symbol.IsStatic:
                         direct.Add(x);
                         break;
                     case AttachedProperty x:
@@ -59,6 +46,21 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
             return (styled.Count > 0 || direct.Count > 0 || attached.Count > 0)
                 ? new DeclaringType(symbol, styled.ToImmutable(), direct.ToImmutable(), attached.ToImmutable())
                 : default;
+        }
+
+        private bool IsAvaloniaObject(INamedTypeSymbol? type)
+        {
+            while (type is not null)
+            {
+                if (SymbolEqualityComparer.Default.Equals(type, _types.AvaloniaObject))
+                {
+                    return true;
+                }
+
+                type = type.BaseType;
+            }
+
+            return false;
         }
     }
 }
