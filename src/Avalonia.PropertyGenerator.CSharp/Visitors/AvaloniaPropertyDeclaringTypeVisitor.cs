@@ -15,9 +15,9 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
                 return null;
             }
 
-            var styled = ImmutableArray.CreateBuilder<StyledProperty>();
-            var direct = ImmutableArray.CreateBuilder<DirectProperty>();
-            var attached = ImmutableArray.CreateBuilder<AttachedProperty>();
+            ImmutableArray<StyledProperty>.Builder? styledBuilder = null;
+            ImmutableArray<DirectProperty>.Builder? directBuilder = null;
+            ImmutableArray<AttachedProperty>.Builder? attachedBuilder = null;
 
             foreach (var member in symbol.GetMembers())
             {
@@ -31,20 +31,24 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
                 switch (property)
                 {
                     case StyledProperty x when !symbol.IsStatic:
-                        styled.Add(x);
+                        (styledBuilder ??= ImmutableArray.CreateBuilder<StyledProperty>()).Add(x);
                         break;
                     case DirectProperty x when !symbol.IsStatic:
-                        direct.Add(x);
+                        (directBuilder ??= ImmutableArray.CreateBuilder<DirectProperty>()).Add(x);
                         break;
                     case AttachedProperty x:
-                        attached.Add(x);
+                        (attachedBuilder ??= ImmutableArray.CreateBuilder<AttachedProperty>()).Add(x);
                         break;
                 }
             }
 
-            return (styled.Count > 0 || direct.Count > 0 || attached.Count > 0)
-                ? new DeclaringType(symbol, styled.ToImmutable(), direct.ToImmutable(), attached.ToImmutable())
-                : default;
+            var styled = styledBuilder?.ToImmutable() ?? ImmutableArray<StyledProperty>.Empty;
+            var direct = directBuilder?.ToImmutable() ?? ImmutableArray<DirectProperty>.Empty;
+            var attached = attachedBuilder?.ToImmutable() ?? ImmutableArray<AttachedProperty>.Empty;
+
+            return (styled.Length > 0 || direct.Length > 0 || attached.Length > 0)
+                ? new DeclaringType(symbol, styled, direct, attached)
+                : null;
         }
 
         private bool IsAvaloniaObject(INamedTypeSymbol? type)

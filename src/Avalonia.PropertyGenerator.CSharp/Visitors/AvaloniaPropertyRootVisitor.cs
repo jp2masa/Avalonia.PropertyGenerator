@@ -6,12 +6,12 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
     internal sealed class AvaloniaPropertyRootVisitor(Types types)
         : SymbolVisitor<ImmutableArray<DeclaringType>?>
     {
-        private readonly Types _types = types;
+        private readonly AvaloniaPropertyDeclaringTypeVisitor _visitor =
+            new AvaloniaPropertyDeclaringTypeVisitor(types);
 
         public override ImmutableArray<DeclaringType>? VisitNamespace(INamespaceSymbol symbol)
         {
-            var builder = ImmutableArray.CreateBuilder<DeclaringType>();
-            var visitor = new AvaloniaPropertyDeclaringTypeVisitor(_types);
+            ImmutableArray<DeclaringType>.Builder? builder = null;
 
             foreach (var member in symbol.GetMembers())
             {
@@ -19,18 +19,20 @@ namespace Avalonia.PropertyGenerator.CSharp.Visitors
 
                 if (ns is not null)
                 {
-                    builder.AddRange(ns);
+                    (builder ??= ImmutableArray.CreateBuilder<DeclaringType>())
+                        .AddRange(ns);
                 }
 
-                var type = member.Accept(visitor);
+                var type = member.Accept(_visitor);
 
                 if (type is not null)
                 {
-                    builder.Add(type);
+                    (builder ??= ImmutableArray.CreateBuilder<DeclaringType>())
+                        .Add(type);
                 }
             }
 
-            return builder.Count > 0 ? builder.ToImmutable() : null;
+            return builder?.ToImmutable();
         }
     }
 }
