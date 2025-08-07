@@ -3,14 +3,10 @@ using Microsoft.CodeAnalysis;
 
 namespace Avalonia.PropertyGenerator.CSharp.Visitors
 {
-    internal sealed class AvaloniaPropertyRootVisitor : SymbolVisitor<ImmutableArray<DeclaringType>?>
+    internal sealed class AvaloniaPropertyRootVisitor(Types types)
+        : SymbolVisitor<ImmutableArray<DeclaringType>?>
     {
-        private readonly Types _types;
-
-        public AvaloniaPropertyRootVisitor(Types types)
-        {
-            _types = types;
-        }
+        private readonly Types _types = types;
 
         public override ImmutableArray<DeclaringType>? VisitNamespace(INamespaceSymbol symbol)
         {

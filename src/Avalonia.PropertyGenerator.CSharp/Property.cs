@@ -3,17 +3,11 @@ using Microsoft.CodeAnalysis;
 
 namespace Avalonia.PropertyGenerator.CSharp
 {
-    internal abstract class Property
+    internal abstract class Property(IFieldSymbol field, string name)
     {
-        protected Property(IFieldSymbol field, string name)
-        {
-            Field = field;
-            Name = name;
-        }
+        public IFieldSymbol Field { get; } = field;
 
-        public IFieldSymbol Field { get; }
-
-        public string Name { get; }
+        public string Name { get; } = name;
 
         public static Property? TryCreate(Types types, IFieldSymbol field)
         {

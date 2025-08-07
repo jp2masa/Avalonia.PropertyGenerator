@@ -3,14 +3,10 @@ using Microsoft.CodeAnalysis;
 
 namespace Avalonia.PropertyGenerator.CSharp.Visitors
 {
-    internal sealed class AvaloniaPropertyDeclaringTypeVisitor : SymbolVisitor<DeclaringType?>
+    internal sealed class AvaloniaPropertyDeclaringTypeVisitor(Types types)
+        : SymbolVisitor<DeclaringType?>
     {
-        private readonly Types _types;
-
-        public AvaloniaPropertyDeclaringTypeVisitor(Types types)
-        {
-            _types = types;
-        }
+        private readonly Types _types = types;
 
         public override DeclaringType? VisitNamedType(INamedTypeSymbol symbol)
         {
