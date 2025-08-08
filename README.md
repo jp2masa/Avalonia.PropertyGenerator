@@ -21,6 +21,8 @@ Avalonia.PropertyGenerator generates the appropriate CLR members for Avalonia pr
 ### Source
 
 ```cs
+using System.Globalization;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 
@@ -28,19 +30,46 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
 {
     internal sealed partial class DemoControl : TemplatedControl
     {
-        public static readonly StyledProperty<double> NumberProperty =
-            AvaloniaProperty.Register<DemoControl, double>(nameof(Number));
+        public static readonly StyledProperty<decimal> NumberProperty =
+            AvaloniaProperty.Register<DemoControl, decimal>(nameof(Number));
+
+        public static readonly StyledProperty<double?> NullableNumberProperty =
+            AvaloniaProperty.Register<DemoControl, double?>(nameof(NullableNumber));
 
         [BackingField(Name = "m_text", Accessibility = BackingFieldAccessibility.Internal)]
         public static readonly DirectProperty<DemoControl, string?> TextProperty =
             AvaloniaProperty.RegisterDirect<DemoControl, string?>(nameof(Text), o => o.Text, (o, v) => o.Text = v);
 
+        [Readonly]
+        public static readonly DirectProperty<DemoControl, string> ReadonlyTextProperty =
+            AvaloniaProperty.RegisterDirect<DemoControl, string>(nameof(ReadonlyText), o => o.ReadonlyText);
+
         public static readonly AttachedProperty<bool> BoolProperty =
             AvaloniaProperty.RegisterAttached<DemoControl, Control, bool>("Bool");
+
+        public static readonly StyledProperty<string> ExistingStyledProperty =
+            AvaloniaProperty.Register<DemoControl, string>(nameof(ExistingStyled));
+
+        public string ExistingStyled => GetValue(ExistingStyledProperty);
+
+        static DemoControl()
+        {
+            NumberProperty.Changed.AddClassHandler<DemoControl, decimal>(
+                (sender, e) =>
+                {
+                    var str = e.NewValue.Value.ToString(CultureInfo.CurrentCulture);
+
+                    sender.SetAndRaise(ReadonlyTextProperty, ref sender._readonlyText, str);
+                    sender.SetValue(ExistingStyledProperty, str);
+                }
+            );
+        }
 
         public DemoControl()
         {
             m_text = "Hello World!";
+            _readonlyText = "0";
+            SetValue(ExistingStyledProperty, "0");
         }
     }
 }
@@ -48,15 +77,23 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
 
 ### Generated code
 
+(To make the code more readable, generated attributes such as `GeneratedCode` and `ExcludeFromCodeCoverage` were removed.)
+
 ```cs
 namespace Avalonia.PropertyGenerator.CSharp.Demo
 {
     partial class DemoControl
     {
-        public double Number
+        public decimal Number
         {
             get => GetValue(NumberProperty);
             set => SetValue(NumberProperty, value);
+        }
+
+        public double? NullableNumber
+        {
+            get => GetValue(NullableNumberProperty);
+            set => SetValue(NullableNumberProperty, value);
         }
 
         internal string? m_text;
@@ -67,15 +104,16 @@ namespace Avalonia.PropertyGenerator.CSharp.Demo
             set => SetAndRaise(TextProperty, ref m_text, value);
         }
 
-        public static bool GetBool(Avalonia.AvaloniaObject obj) => obj.GetValue(BoolProperty);
+        private string _readonlyText;
 
-        public static void SetBool(Avalonia.AvaloniaObject obj, bool value) => obj.SetValue(BoolProperty, value);
+        public string ReadonlyText => _readonlyText;
+
+        public static bool GetBool(global::Avalonia.AvaloniaObject obj) =>
+            (obj ?? throw new global::System.ArgumentNullException(nameof(obj))).GetValue(BoolProperty);
+
+        public static void SetBool(global::Avalonia.AvaloniaObject obj, bool value) =>
+            (obj ?? throw new global::System.ArgumentNullException(nameof(obj))).SetValue(BoolProperty, value);
     }
 }
 
 ```
-
-## TODO
-
-- Readonly direct properties
-- Generate XML documentation
