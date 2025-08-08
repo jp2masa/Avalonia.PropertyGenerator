@@ -22,7 +22,7 @@
         <VersionPrefix>0.11.0</VersionPrefix>
         <VersionSuffix Condition="'$(APPVEYOR)' == 'True'">build.$(APPVEYOR_BUILD_NUMBER)+$(APPVEYOR_REPO_COMMIT.Substring(0, 7))</VersionSuffix>
         <VersionSuffix Condition="'$(VersionSuffix)' == ''  AND '$(DesignTimeBuild)' != 'True'">localbuild$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</VersionSuffix>
-        <VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'True'">beta</VersionSuffix>
+        <VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'True'">beta2</VersionSuffix>
     </PropertyGroup>
 
     <ItemGroup>
