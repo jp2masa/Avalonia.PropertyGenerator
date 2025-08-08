@@ -63,14 +63,14 @@ namespace Avalonia.PropertyGenerator.CSharp
                     foreach (var arg in attribute.NamedArguments)
                     {
                         if (arg.Key.Equals("Name", StringComparison.Ordinal)
-                            && arg.Value.Value is string value)
+                            && arg.Value.Value is string fieldName)
                         {
-                            backingFieldName = value;
+                            backingFieldName = fieldName;
                         }
                         else if (arg.Key.Equals("Accessibility", StringComparison.Ordinal)
-                            && arg.Value.Value is not null)
+                            && arg.Value.Value is { } fieldAccessibility)
                         {
-                            backingFieldAccessibility = (Accessibility)arg.Value.Value;
+                            backingFieldAccessibility = (Accessibility)fieldAccessibility;
                         }
                     }
                 }
