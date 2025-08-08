@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <AvaloniaVersion>11.3.2</AvaloniaVersion>
-        <MicrosoftCodeAnalysisAnalyzersVersion>3.3.4</MicrosoftCodeAnalysisAnalyzersVersion>
-        <MicrosoftCodeAnalysisCSharpVersion>3.10.0</MicrosoftCodeAnalysisCSharpVersion>
+        <MicrosoftCodeAnalysisAnalyzersVersion>4.14.0</MicrosoftCodeAnalysisAnalyzersVersion>
+        <MicrosoftCodeAnalysisCSharpVersion>4.0.1</MicrosoftCodeAnalysisCSharpVersion>
         <MicrosoftCodeAnalysisNetAnalyzersVersion>5.0.3</MicrosoftCodeAnalysisNetAnalyzersVersion>
     </PropertyGroup>
 

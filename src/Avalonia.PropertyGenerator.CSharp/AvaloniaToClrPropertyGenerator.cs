@@ -10,19 +10,22 @@ using Avalonia.PropertyGenerator.CSharp.Visitors;
 namespace Avalonia.PropertyGenerator.CSharp
 {
     [Generator]
-    internal sealed class AvaloniaToClrPropertyGenerator : ISourceGenerator
+    internal sealed class AvaloniaToClrPropertyGenerator : IIncrementalGenerator
     {
-        private readonly string _generatorName = typeof(AvaloniaToClrPropertyGenerator).FullName!;
+        private static readonly string s_generatorName =
+            typeof(AvaloniaToClrPropertyGenerator).FullName!;
 
-        private readonly string _generatorVersion =
+        private static readonly string s_generatorVersion =
             Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
-        public void Initialize(GeneratorInitializationContext context) { }
+        public void Initialize(IncrementalGeneratorInitializationContext context) =>
+            context.RegisterSourceOutput(
+                context.CompilationProvider.Combine(context.ParseOptionsProvider),
+                static (ctx, args) => Execute(ctx, args.Left, args.Right)
+            );
 
-        public void Execute(GeneratorExecutionContext context)
+        private static void Execute(SourceProductionContext context, Compilation compilation, ParseOptions parseOptions)
         {
-            var compilation = context.Compilation;
-
             if (Types.FromCompilation(compilation, context.ReportDiagnostic) is not { } wellKnownTypes)
             {
                 return;
@@ -71,12 +74,12 @@ namespace Avalonia.PropertyGenerator
 
             var attributesSource = SourceText.From(attributes, Encoding.UTF8);
 
-            if (context.ParseOptions is not CSharpParseOptions parseOptions)
+            if (parseOptions is not CSharpParseOptions csParseOptions)
             {
                 throw new InvalidOperationException("Only C# is currently supported!");
             }
 
-            compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(attributesSource, parseOptions));
+            compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(attributesSource, csParseOptions));
 
             var visitor = new AvaloniaPropertyRootVisitor(wellKnownTypes);
             var types = visitor.Visit(compilation.Assembly.GlobalNamespace);
@@ -227,8 +230,8 @@ namespace {type.Type.ContainingNamespace.ToDisplayString()}
 #pragma warning disable
 ";
 
-        private string GeneratedCodeAttribute =>
-            $@"[global::System.CodeDom.Compiler.GeneratedCode(""{_generatorName}"", ""{_generatorVersion}"")]";
+        private static string GeneratedCodeAttribute =>
+            $@"[global::System.CodeDom.Compiler.GeneratedCode(""{s_generatorName}"", ""{s_generatorVersion}"")]";
 
         private static string ExcludeFromCodeCoverageAttribute =>
             "[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]";
